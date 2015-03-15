@@ -70,6 +70,11 @@ THREE.CSG = {
 			throw 'CSG library not loaded. Please get a copy from https://github.com/evanw/csg.js';
 		}
 		
+		// Create the UVs
+		// https://www.udacity.com/course/viewer#!/c-cs291/l-124106595/m-170372600
+		var uv = new THREE.Vector2(0,0);
+		var uvs = [uv,uv,uv];
+
 		for ( i = 0; i < polygons.length; i++ ) {
 			
 			// Vertices
@@ -81,15 +86,15 @@ THREE.CSG = {
 				vertices.pop( );
 			}
 			
+			var normal = new THREE.Vector3().copy(polygons[i].plane.normal);
 			for (var j = 2; j < vertices.length; j++) {
-				face = new THREE.Face3( vertices[0], vertices[j-1], vertices[j], new THREE.Vector3( ).copy( polygons[i].plane.normal ) );
+				face = new THREE.Face3( vertices[0], vertices[j-1], vertices[j], normal);
 				three_geometry.faces.push( face );
-				three_geometry.faceVertexUvs[0].push( new THREE.Vector2( ) );
+				three_geometry.faceVertexUvs[0].push(uvs);
 			}
 		}
 		
 		three_geometry.computeBoundingBox();
-		
 		return three_geometry;
 	},
 	
